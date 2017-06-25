@@ -2996,10 +2996,13 @@ static int msm_dai_q6_mi2s_prepare(struct snd_pcm_substream *substream,
 	}
 
 #ifdef CONFIG_SND_SOC_MAX98927
+    /* Redirect 24-bit to 32-bit width for MAX98927. */
     if (AFE_PORT_ID_TERTIARY_MI2S_TX == port_id &&
         dai_data->port_config.i2s.bit_width == 24)
     {
         dai_data->port_config.i2s.bit_width = 32;
+        pr_info("%s: redirecting port_id 0x%x to %d bit width\n",
+                __func__, port_id, dai_data->port_config.i2s.bit_width);
     }
 #endif
 
@@ -3314,7 +3317,9 @@ static struct snd_soc_dai_driver msm_dai_q6_mi2s_dai[] = {
 			.rates = SNDRV_PCM_RATE_48000 | SNDRV_PCM_RATE_8000 |
 			SNDRV_PCM_RATE_16000,
 #ifdef CONFIG_SND_SOC_MAX98927
-			.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
+			.formats = SNDRV_PCM_FMTBIT_S16_LE |
+			SNDRV_PCM_FMTBIT_S24_LE | SNDRV_PCM_FMTBIT_S24_3LE |
+			SNDRV_PCM_FMTBIT_S32_LE,
 #else
   			.formats = SNDRV_PCM_FMTBIT_S16_LE,
 #endif
@@ -3327,7 +3332,9 @@ static struct snd_soc_dai_driver msm_dai_q6_mi2s_dai[] = {
 			.rates = SNDRV_PCM_RATE_48000 | SNDRV_PCM_RATE_8000 |
 			SNDRV_PCM_RATE_16000,
 #ifdef CONFIG_SND_SOC_MAX98927
-			.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
+			.formats = SNDRV_PCM_FMTBIT_S16_LE |
+			SNDRV_PCM_FMTBIT_S24_LE | SNDRV_PCM_FMTBIT_S24_3LE |
+			SNDRV_PCM_FMTBIT_S32_LE,
 #else
   			.formats = SNDRV_PCM_FMTBIT_S16_LE,
 #endif
@@ -7091,3 +7098,4 @@ module_exit(msm_dai_q6_exit);
 /* Module information */
 MODULE_DESCRIPTION("MSM DSP DAI driver");
 MODULE_LICENSE("GPL v2");
+
