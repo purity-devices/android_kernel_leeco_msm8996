@@ -4202,6 +4202,14 @@ static const struct snd_kcontrol_new pri_rx_voice_mixer_controls[] = {
 	SOC_SINGLE_EXT("QCHAT", MSM_BACKEND_DAI_PRI_I2S_RX,
 	MSM_FRONTEND_DAI_QCHAT, 1, 0, msm_routing_get_voice_mixer,
 	msm_routing_put_voice_mixer),
+#ifdef CONFIG_PRODUCT_LE_ZL1
+	SOC_SINGLE_EXT("VoiceMMode1", MSM_BACKEND_DAI_SECONDARY_MI2S_RX,
+	MSM_FRONTEND_DAI_VOICEMMODE1, 1, 0, msm_routing_get_voice_mixer,
+	msm_routing_put_voice_mixer),
+	SOC_SINGLE_EXT("VoiceMMode2", MSM_BACKEND_DAI_SECONDARY_MI2S_RX,
+	MSM_FRONTEND_DAI_VOICEMMODE2, 1, 0, msm_routing_get_voice_mixer,
+	msm_routing_put_voice_mixer),
+#endif
 };
 
 static const struct snd_kcontrol_new sec_i2s_rx_voice_mixer_controls[] = {
@@ -9817,3 +9825,4 @@ module_exit(msm_soc_routing_platform_exit);
 
 MODULE_DESCRIPTION("MSM routing platform driver");
 MODULE_LICENSE("GPL v2");
+
